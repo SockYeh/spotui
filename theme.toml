@@ -1,0 +1,11 @@
+[colors]
+primary = "#00ffcc"
+background = "#1e1e1e"
+foreground = "#ffffff"
+border = "#333333"
+accent = "#ff8800"
+
+[styles]
+padding = 1
+margin = 1
+border_style = "rounded"
