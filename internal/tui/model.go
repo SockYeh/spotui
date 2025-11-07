@@ -6,13 +6,15 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-type model struct{}
+type Model struct{
+	currentView string
+}
 
-func InitialModel() model { return model{} }
+func InitialModel() Model { return Model{} }
 
-func (m model) Init() tea.Cmd { return nil }
+func (m Model) Init() tea.Cmd { return nil }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) { 
+func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) { 
 	switch msg:=msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
@@ -23,9 +25,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil 
 }
 
-func (m model) View() string {
+func (m Model) View() string {
 	var str strings.Builder
 	str.WriteString("SpoTUI - Press q to exit")
 	str.WriteString("\n")
+
+	switch m.currentView {
+	case "main":
+		str.WriteString(renderMainView(m))
+	}
+	
 	return str.String()
 }
