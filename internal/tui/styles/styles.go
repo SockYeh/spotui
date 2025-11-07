@@ -22,20 +22,23 @@ func Reload() {
 	}
 
 	base := lipgloss.NewStyle().
-			Foreground(lipgloss.Color(Current.Colors.Foreground)).
-			Background(lipgloss.Color(Current.Colors.Background))
+			Foreground(lipgloss.Color(Current.Colors.Foreground))
 
 	PaneBase := base.Border(border).
 			BorderForeground(lipgloss.Color(Current.Colors.Border)).
-			Padding(Current.Styles.Padding).
-			Margin(Current.Styles.Margin)
-
+			Padding(Current.Styles.Padding)
+	
 	LeftPanel = PaneBase
 	CenterPanel = PaneBase.BorderForeground(lipgloss.Color(Current.Colors.Primary))
 	RightPanel = PaneBase
-	PlayerBar = lipgloss.NewStyle().
+	PlayerBar = PaneBase.
 			Foreground(lipgloss.Color(Current.Colors.Foreground)).
-			Background(lipgloss.Color(Current.Colors.Background)).
 			Padding(0,1)
-	Title = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(Current.Colors.Accent))
+	Title = PaneBase.
+			Bold(true).
+			Foreground(lipgloss.Color(Current.Colors.Accent)).
+			Background(lipgloss.Color(Current.Colors.Background)).
+			Align(lipgloss.Center).
+			Padding(1, 2)
+
 }

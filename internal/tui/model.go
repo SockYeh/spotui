@@ -31,13 +31,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m Model) View() string {
 	var str strings.Builder
-	str.WriteString("SpoTUI - Press q to exit")
-	str.WriteString("\n")
-
-	switch m.currentView {
-	case "main":
-		str.WriteString(renderMainView(m))
-	}
-	
+	str.WriteString(renderMainView(m))
 	return str.String()
 }

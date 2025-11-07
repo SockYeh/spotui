@@ -8,4 +8,4 @@ accent = "#ff8800"
 [styles]
 padding = 1
 margin = 1
-border_style = "rounded"
+border_style = "double"

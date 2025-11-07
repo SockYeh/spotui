@@ -15,7 +15,7 @@ func main() {
 	}
 	styles.Reload()
 
-	if _, err := tea.NewProgram(tui.InitialModel()).Run(); err != nil {
+	if _, err := tea.NewProgram(tui.InitialModel(), tea.WithAltScreen()).Run(); err != nil {
 		log.Fatal(err)
 	}
 }
