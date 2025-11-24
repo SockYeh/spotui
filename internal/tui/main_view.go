@@ -6,7 +6,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 func renderMainView(m Model) string {
-
+	styles.CurrentView = m.currentView
+	
 	leftWidth := int(0.25*float64(m.width))
 	centerWidth := int(0.5*float64(m.width))
 	rightWidth := m.width - leftWidth - centerWidth - 6

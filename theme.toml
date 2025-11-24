@@ -2,7 +2,7 @@
 primary = "#00ffcc"
 background = "#1e1e1e"
 foreground = "#ffffff"
-border = "#333333"
+border = "#666666"
 accent = "#ff8800"
 
 [styles]
