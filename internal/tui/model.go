@@ -1,19 +1,36 @@
 package tui
 
 import (
+	"log"
+	"spotui/internal/auth"
 	"spotui/internal/tui/styles"
+	"spotui/internal/utils"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Model struct{
-	width int
-	height int
+	width 		int
+	height 		int
 	currentView int
+	accessToken string
 }
 
-func InitialModel() Model { return Model{} }
+func InitialModel() Model {
+
+	if utils.Current.General.UseSpotify {
+		resultChan, stop := auth.StartCallbackSever()
+
+		result := <-resultChan
+		if result.Error != nil {
+			log.Fatalf("Error occured during spotify oauth grant: %s", result.Error)
+		}
+		stop()
+		return Model{accessToken: result.AccessToken}
+	}
+	return Model{}
+}
 
 func (m Model) Init() tea.Cmd { return nil }
 

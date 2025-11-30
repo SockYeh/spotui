@@ -11,12 +11,12 @@ import (
 
 func main() {
 	
-	if err := styles.LoadTheme("theme.toml"); err != nil {
+	if err := styles.LoadTheme("config/theme.toml"); err != nil {
 		log.Fatal("Failed to load theme: ", err)
 	}
 	styles.Reload()
 
-	if err := utils.LoadConfig("config.toml"); err != nil {
+	if err := utils.LoadConfig("config/config.toml"); err != nil {
 		log.Fatal("Failed to load config: ", err)
 	}
 

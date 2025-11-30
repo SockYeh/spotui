@@ -32,4 +32,5 @@ go.work.sum
 .vscode/
 
 # cant let the oauth info leak
-config.toml
+config/spotify.json
+config/config.toml
