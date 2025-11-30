@@ -56,7 +56,7 @@ func StartCallbackSever() (<-chan CallbackResult, func()) {
 
 		if err == "" && code != "" {
 			c.String(http.StatusOK, "Authentication successful. You can safely close this window.")
-			resp := RequestAccessToken(code)
+			resp := requestAccessToken(code)
 			resultChan <- CallbackResult{AccessToken: resp.AccessToken}
 		}
 	})
@@ -79,7 +79,7 @@ func StartCallbackSever() (<-chan CallbackResult, func()) {
 	return resultChan, stop
 }
 
-func RequestAccessToken(code string) AccessTokenData {
+func requestAccessToken(code string) AccessTokenData {
 	data := url.Values{}
 	data.Set("code", code)
 	data.Set("grant_type", "authorization_code")
@@ -117,4 +117,53 @@ func RequestAccessToken(code string) AccessTokenData {
 	resp.Body.Close()
 	return accessTokenData
 	
+}
+
+func readRefreshToken() string {
+	reader, _ := os.ReadFile("config/spotify.json")
+	
+	var accessTokenData AccessTokenData
+	err := json.Unmarshal(reader, &accessTokenData)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return accessTokenData.RefreshToken
+}
+
+func RefreshAccessToken() string {
+	data := url.Values{}
+	data.Set("grant_type", "refresh_token")
+	data.Set("refresh_token", readRefreshToken())
+
+	req, err := http.NewRequest("POST", "https://accounts.spotify.com/api/token", strings.NewReader(data.Encode()))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	spotifyB64 := base64.StdEncoding.EncodeToString([]byte(utils.Current.Spotify.ClientID + ":" + utils.Current.Spotify.ClientSecret))
+	
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Authorization", "Basic " + spotifyB64)
+	resp, err := http.DefaultClient.Do(req)
+	
+	
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	var accessTokenData AccessTokenData
+	if resp.StatusCode == http.StatusOK {
+		err := json.NewDecoder(resp.Body).Decode(&accessTokenData)
+		if err != nil {
+			log.Fatal(err)
+		}	
+		
+		dataJson, _ := json.MarshalIndent(accessTokenData, "", "\t")
+		err = os.WriteFile("config/spotify.json", dataJson, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	resp.Body.Close()
+	return accessTokenData.AccessToken
 }
