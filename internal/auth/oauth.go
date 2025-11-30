@@ -31,12 +31,12 @@ type AccessTokenData struct {
 
 var scope = "user-read-playback-state+user-modify-playback-state+user-read-currently-playing+user-library-read+user-top-read+user-library-read+user-follow-read+user-read-private+playlist-read-private+user-read-currently-playing+user-read-recently-played"
 
-func CreateOauthLink(clientID string, scope string, redirect_uri string) string {
+func createOauthLink(clientID string, scope string, redirect_uri string) string {
 	return fmt.Sprintf("https://accounts.spotify.com/authorize?client_id=%s&response_type=code&redirect_uri=%s&scope=%s", clientID, url.QueryEscape(redirect_uri), scope) 
 }
 
 func StartCallbackSever() (<-chan CallbackResult, func()) {
-	fmt.Print(CreateOauthLink(utils.Current.Spotify.ClientID, scope, "http://127.0.0.1:8000/callback"))
+	fmt.Print(createOauthLink(utils.Current.Spotify.ClientID, scope, "http://127.0.0.1:8000/callback"))
 	r := gin.New()
 	resultChan := make(chan CallbackResult, 1)
 
