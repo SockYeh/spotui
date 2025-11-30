@@ -24,7 +24,7 @@ type AccessTokenData struct {
 	AccessToken  string `json:"access_token"`
 	TokenType    string `json:"token_type"`
 	Scope        string `json:"scope"`
-	ExpiresIn    int64  `json:"expires_in"`
+	ExpiresIn    int    `json:"expires_in"`
 	RefreshToken string `json:"refresh_token"`
 } 
 
@@ -36,7 +36,7 @@ func createOauthLink(clientID string, scope string, redirect_uri string) string 
 }
 
 func StartCallbackSever() (<-chan CallbackResult, func()) {
-	fmt.Print(createOauthLink(utils.Current.Spotify.ClientID, scope, "http://127.0.0.1:8000/callback"))
+	utils.OpenURL(createOauthLink(utils.Current.Spotify.ClientID, scope, "http://127.0.0.1:8000/callback"))
 	r := gin.New()
 	resultChan := make(chan CallbackResult, 1)
 
