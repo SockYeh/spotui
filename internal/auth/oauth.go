@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -90,16 +89,7 @@ func requestAccessToken(code string) AccessTokenData {
 		log.Fatal(err)
 	}
 
-	spotifyB64 := base64.StdEncoding.EncodeToString([]byte(utils.Current.Spotify.ClientID + ":" + utils.Current.Spotify.ClientSecret))
-	
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Authorization", "Basic " + spotifyB64)
-	resp, err := http.DefaultClient.Do(req)
-	
-	
-	if err != nil {
-		log.Fatal(err)
-	}
+	resp := utils.SendSpotifyReq(req)	
 	
 	var accessTokenData AccessTokenData
 	if resp.StatusCode == http.StatusOK {
@@ -140,16 +130,7 @@ func RefreshAccessToken() string {
 		log.Fatal(err)
 	}
 
-	spotifyB64 := base64.StdEncoding.EncodeToString([]byte(utils.Current.Spotify.ClientID + ":" + utils.Current.Spotify.ClientSecret))
-	
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Authorization", "Basic " + spotifyB64)
-	resp, err := http.DefaultClient.Do(req)
-	
-	
-	if err != nil {
-		log.Fatal(err)
-	}
+	resp := utils.SendSpotifyReq(req)
 	
 	var accessTokenData AccessTokenData
 	if resp.StatusCode == http.StatusOK {
