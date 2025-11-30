@@ -16,7 +16,7 @@ import (
 
 type CallbackResult struct {
 	AccessToken  string
-	Error error
+	Error 		 error
 }
 
 type AccessTokenData struct {
